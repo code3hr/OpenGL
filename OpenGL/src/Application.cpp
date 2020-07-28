@@ -105,14 +105,19 @@ int main(void)
     std::cout << glGetString(GL_VERSION) << std::endl;
 
     float positions[] = {
-        -0.5f, -0.5f,
-        0.5f, -0.5f,
-        0.5f, 0.5f,
-
-      //  inverse triangle cordinates for squares
-        0.5f, 0.5f,
-        -0.5f, 0.5f,
-        -0.5f,-0.5f
+        -0.5f, -0.5f, //0
+        0.5f, -0.5f, //1
+        0.5f, 0.5f, //2
+        -0.5f, 0.5f //3
+      
+      
+        
+        
+    };
+  //  how to draw a square
+    unsigned int indices[] = {
+0,1,2,
+2,3,0
     };
     //creating buffer on nvram
     unsigned int buffer;
@@ -133,6 +138,12 @@ int main(void)
     //we enable the vertex attribute
     glEnableVertexAttribArray(0); //0 is the index u want to enable
 
+    //interpreting the indices to draw a square
+    unsigned int ibo;
+    glGenBuffers(1, &ibo); //create 1 buffer and the id of the generated buffer 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);// what is the purpose of the buffer
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);//put data into the buffer and specifies its usage
+
          //writing shaders
   
     ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
@@ -145,7 +156,7 @@ int main(void)
         // legacy opengl
       
         glClear(GL_COLOR_BUFFER_BIT);
-        glDrawArrays(GL_TRIANGLES, 0, 6); //Draw the currently bind buffer
+        glDrawElements(GL_TRIANGLES,  6, GL_UNSIGNED_INT,nullptr); //Draw the currently bind buffer
         /*
         glBegin(GL_TRIANGLES);
         glVertex2f(-0.5f, -0.5f);
