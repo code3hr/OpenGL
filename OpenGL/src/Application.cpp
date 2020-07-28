@@ -104,16 +104,21 @@ int main(void)
         std::cout << "error!" << std::endl;;
     std::cout << glGetString(GL_VERSION) << std::endl;
 
-    float positions[6] = {
+    float positions[] = {
         -0.5f, -0.5f,
-        0.0f, 0.5f,
-        0.5f, -0.5f
+        0.5f, -0.5f,
+        0.5f, 0.5f,
+
+      //  inverse triangle cordinates for squares
+        0.5f, 0.5f,
+        -0.5f, 0.5f,
+        -0.5f,-0.5f
     };
     //creating buffer on nvram
     unsigned int buffer;
     glGenBuffers(1, &buffer); //create 1 buffer and the id of the generated buffer 
     glBindBuffer(GL_ARRAY_BUFFER, buffer);// what is the purpose of the buffer
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);//put data into the buffer and specifies its usage
+    glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), positions, GL_STATIC_DRAW);//put data into the buffer and specifies its usage
 
 
     //interpreting the bufferData
@@ -140,7 +145,7 @@ int main(void)
         // legacy opengl
       
         glClear(GL_COLOR_BUFFER_BIT);
-        glDrawArrays(GL_TRIANGLES, 0, 3); //Draw the currently bind buffer
+        glDrawArrays(GL_TRIANGLES, 0, 6); //Draw the currently bind buffer
         /*
         glBegin(GL_TRIANGLES);
         glVertex2f(-0.5f, -0.5f);
